@@ -6,8 +6,8 @@ This repository contains a collection of basic examples demonstrating how to dep
 
 This repository contains the following example projects:
 
+- [**basic-hardhat**](./basic-hardhat/) - minimal `Storage` contract deployment using Hardhat — the ideal starting point
 - [**erc20-hardhat**](./erc20-hardhat/) - implementation of an ERC-20 token contract using Hardhat
-
 
 Each subfolder is a standalone Hardhat project with its own configuration, contracts, deployment scripts, and tests.
 

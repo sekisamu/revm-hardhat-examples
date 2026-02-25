@@ -1,0 +1,15 @@
+{
+  "name": "basic-hardhat",
+  "version": "1.0.0",
+  "scripts": {
+    "compile": "hardhat compile",
+    "deploy": "hardhat ignition deploy ignition/modules/Storage.ts --network polkadotTestnet"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@types/node": "^20.11.19",
+    "hardhat": "^2.22.16",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.3.3"
+  }
+}
