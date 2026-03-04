@@ -6,19 +6,23 @@ import {
   solidityPacked,
   getCreate2Address,
 } from "ethers";
+import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
+import { ERC20 } from "../typechain-types/test/ERC20";
+import { UniswapV2Factory } from "../typechain-types/UniswapV2Factory";
+import { UniswapV2Pair } from "../typechain-types/UniswapV2Pair";
 import { expandTo18Decimals } from "./shared/utilities";
 
 const TOTAL_SUPPLY = expandTo18Decimals(10000);
 const MINIMUM_LIQUIDITY = BigInt("1000");
 
 describe("UniswapV2Pair", function () {
-  let factory: any;
-  let token0: any;
-  let token1: any;
-  let pair: any;
+  let factory: UniswapV2Factory;
+  let token0: ERC20;
+  let token1: ERC20;
+  let pair: UniswapV2Pair;
 
-  let wallet: any;
-  let other: any;
+  let wallet: HardhatEthersSigner;
+  let other: HardhatEthersSigner;
 
   beforeEach(async function () {
     [wallet, other] = await ethers.getSigners();

@@ -1,4 +1,4 @@
-import { getBigInt, keccak256, AbiCoder, toUtf8Bytes } from "ethers";
+import { getBigInt, keccak256, toUtf8Bytes } from "ethers";
 
 export const PERMIT_TYPEHASH = keccak256(
   toUtf8Bytes(

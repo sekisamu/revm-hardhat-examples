@@ -30,7 +30,7 @@ The project includes the following core contracts:
 | Component | Version |
 |-----------|---------|
 | Hardhat | 2.22.x |
-| Solidity | 0.8.28 |
+| Solidity | 0.5.16 |
 | Node.js | >= 22 |
 
 ## Project Structure
@@ -186,11 +186,11 @@ The project includes the following networks:
 
 ## Testing
 
-The project includes 28 comprehensive tests covering:
+The project includes 29 comprehensive tests covering:
 
 - **UniswapV2ERC20** (7 tests): name, symbol, decimals, totalSupply, approve, transfer, transferFrom, permit
 - **UniswapV2Factory** (5 tests): feeTo, feeToSetter, createPair, setFeeTo, setFeeToSetter
-- **UniswapV2Pair** (16 tests): mint, burn, swap, getInputPrice, optimistic swaps, fee toggle
+- **UniswapV2Pair** (17 tests): mint, burn, swap, getInputPrice, optimistic swaps, fee toggle
 
 Run tests:
 

@@ -1,15 +1,17 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
-import { keccak256, AbiCoder, toUtf8Bytes, MaxUint256 } from "ethers";
+import { keccak256, AbiCoder, toUtf8Bytes, MaxUint256, Wallet, Signature } from "ethers";
+import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
+import { ERC20 } from "../typechain-types/test/ERC20";
 import { expandTo18Decimals } from "./shared/utilities";
 
 const TOTAL_SUPPLY = expandTo18Decimals(10000);
 const TEST_AMOUNT = expandTo18Decimals(10);
 
 describe("UniswapV2ERC20", function () {
-  let token: any;
-  let wallet: any;
-  let other: any;
+  let token: ERC20;
+  let wallet: HardhatEthersSigner;
+  let other: HardhatEthersSigner;
 
   beforeEach(async function () {
     const ERC20 = await ethers.getContractFactory("ERC20");
@@ -119,5 +121,55 @@ describe("UniswapV2ERC20", function () {
       TOTAL_SUPPLY - TEST_AMOUNT
     );
     expect(await token.balanceOf(other.address)).to.equal(TEST_AMOUNT);
+  });
+
+  it("permit", async () => {
+    // Local wallet with known private key — signTypedData runs locally, no RPC needed
+    const permitSigner = Wallet.createRandom().connect(ethers.provider);
+
+    const nonce = await token.nonces(permitSigner.address);
+    const deadline = MaxUint256;
+    const tokenAddress = await token.getAddress();
+    const chainId = (await ethers.provider.getNetwork()).chainId;
+    const name = await token.name();
+
+    const domain = {
+      name,
+      version: "1",
+      chainId,
+      verifyingContract: tokenAddress,
+    };
+
+    const types = {
+      Permit: [
+        { name: "owner", type: "address" },
+        { name: "spender", type: "address" },
+        { name: "value", type: "uint256" },
+        { name: "nonce", type: "uint256" },
+        { name: "deadline", type: "uint256" },
+      ],
+    };
+
+    const message = {
+      owner: permitSigner.address,
+      spender: other.address,
+      value: TEST_AMOUNT,
+      nonce,
+      deadline,
+    };
+
+    const sig = await permitSigner.signTypedData(domain, types, message);
+    const { v, r, s } = Signature.from(sig);
+
+    // Anyone can submit the permit on-chain (wallet pays gas, permitSigner doesn't need ETH)
+    await expect(
+      token.permit(permitSigner.address, other.address, TEST_AMOUNT, deadline, v, r, s)
+    )
+      .to.emit(token, "Approval")
+      .withArgs(permitSigner.address, other.address, TEST_AMOUNT);
+    expect(await token.allowance(permitSigner.address, other.address)).to.equal(
+      TEST_AMOUNT
+    );
+    expect(await token.nonces(permitSigner.address)).to.equal(1);
   });
 });

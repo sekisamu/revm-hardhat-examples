@@ -1,6 +1,9 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import { keccak256, getCreate2Address, solidityPacked } from "ethers";
+import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
+import { ERC20 } from "../typechain-types/test/ERC20";
+import { UniswapV2Factory } from "../typechain-types/UniswapV2Factory";
 import { expandTo18Decimals } from "./shared/utilities";
 
 const TEST_ADDRESSES: [string, string] = [
@@ -11,11 +14,11 @@ const TEST_ADDRESSES: [string, string] = [
 const TOTAL_SUPPLY = expandTo18Decimals(10000);
 
 describe("UniswapV2Factory", function () {
-  let wallet: any;
-  let other: any;
+  let wallet: HardhatEthersSigner;
+  let other: HardhatEthersSigner;
 
-  let token: any;
-  let factory: any;
+  let token: ERC20;
+  let factory: UniswapV2Factory;
 
   beforeEach(async function () {
     [wallet, other] = await ethers.getSigners();

@@ -1,6 +1,9 @@
 {
   "name": "uniswap-v2-hardhat",
   "version": "1.0.0",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",
