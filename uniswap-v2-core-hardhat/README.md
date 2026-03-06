@@ -36,7 +36,7 @@ The project includes the following core contracts:
 ## Project Structure
 
 ```
-uniswap-v2-hardhat/
+uniswap-v2-core-hardhat/
 ├── contracts/
 │   ├── UniswapV2ERC20.sol            # Base ERC-20 with permit
 │   ├── UniswapV2Factory.sol          # Pair factory
